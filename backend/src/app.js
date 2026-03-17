@@ -4,7 +4,10 @@ const cors = require("cors");
 const app = express();
 
 // middlewares
-app.use(cors({origin: process.env.FRONTEND_URL, credentials: true}));
+app.use(cors({
+  origin: "https://crm-system-lyart-eight.vercel.app",
+  credentials: true
+}));
 
 app.use(express.json());
 
