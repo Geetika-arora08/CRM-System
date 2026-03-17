@@ -9,7 +9,6 @@ const Register = () => {
     name: "",
     email: "",
     password: "",
-    repassword: "",
   });
 
   const [message, setMessage] = useState("");
@@ -22,19 +21,27 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (formData.password !== formData.repassword) {
-      setMessage("Passwords do not match ❌");
-      return;
-    }
+    // if (formData.password !== formData.repassword) {
+    //   setMessage("Passwords do not match ❌");
+    //   return;
+    // }
 
     try {
       setLoading(true);
       const res = await api.post("/auth/register", formData);
       setMessage(res.data.message);
-    } catch (err) {
-      setMessage(err.response?.data?.message || "Something went wrong");
-    } finally {
-      setLoading(false);
+
+      setFormData({
+      name: "",
+      email: "",
+      password: "",
+    });
+    } 
+    catch (err) {
+    setMessage(err.response?.data?.message || "Something went wrong");
+    } 
+    finally {
+    setLoading(false);
     }
   };
 

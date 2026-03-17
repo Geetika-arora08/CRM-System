@@ -12,15 +12,15 @@ const AccessLog = require('../visitors/visitor.model')
 //==============REGISTER USER===============
 const registerUser = async(req, res) => {
     try{
-        const{name, email, password, repassword, contact, gender, role } = req.body;
+        const{name, email, password} = req.body;
 
-        if(!name || !email || !password || !repassword || !contact || !gender ) {
+        if(!name || !email || !password  ) {
         return res.status(400).json({ message: "All fields are required" })
         }
 
-        if(password !== repassword) {
-            return res.status(400).json({ message: "Passwords do not match" })
-        }
+        // if(password !== repassword) {
+        //     return res.status(400).json({ message: "Passwords do not match" })
+        // }
 
         const userExist = await User.findOne({email});
         if(userExist) {
@@ -33,8 +33,6 @@ const registerUser = async(req, res) => {
             name,
             email,
             password: hashedPassword,
-            contact,
-            gender,
             role: "user"
         })
 

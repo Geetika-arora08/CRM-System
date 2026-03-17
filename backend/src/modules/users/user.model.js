@@ -18,7 +18,6 @@ const UserSchema = new mongoose.Schema({
     },
     contact: {
         type: String,
-        required: true
     },
     role: {
     type: String,
@@ -30,7 +29,6 @@ const UserSchema = new mongoose.Schema({
     gender: {
         type: String,
         enum: ["male", "female", "other"],
-        required: true
     },
     address: {
         type: String,

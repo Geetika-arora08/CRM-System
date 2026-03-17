@@ -20,6 +20,7 @@ const UserDashboard = () => {
   const fetchDashboard = async () => {
     try {
       const res = await api.get("/users/userdashboard");
+      console.log(res.data); 
       if (res.data.success) {
         setUserName(res.data.data.name);
         setEmail(res.data.data.email);

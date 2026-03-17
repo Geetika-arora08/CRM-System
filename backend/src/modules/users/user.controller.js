@@ -6,6 +6,7 @@ const Quote = require("../quotes/quote.model");
 exports.userdashboard = async (req, res) => {
   try {
     const userId = req.user._id;
+    console.log("REQ.USER:", req.user);
 
     const totalQuotes = await Quote.countDocuments({
       user: userId,

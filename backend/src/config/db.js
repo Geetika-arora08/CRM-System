@@ -7,6 +7,7 @@ const DBConnect = async() => {
     }
     catch(err) {
         console.log("MONGODB is not connected");
+        console.log(err.message);
     }
 }
 

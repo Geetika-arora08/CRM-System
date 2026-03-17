@@ -20,17 +20,17 @@ app.use("/api/tickets", require("./modules/tickets/ticket.routes"))
 app.use("/api/quotes", require("./modules/quotes/quotes.routes"))
 
 
+// health check
+app.get("/", (req, res) => {
+  res.send("Working");
+});
+
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({
     success: false,
     message: "Route not found"
   });
-});
-
-// health check
-app.get("/", (req, res) => {
-  res.send("Working");
 });
 
 module.exports = app;

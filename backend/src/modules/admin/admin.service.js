@@ -3,67 +3,60 @@ const Ticket = require("../tickets/ticket.model");
 const Quote = require("../quotes/quote.model");
 const Visitors = require("../visitors/visitor.model");
 
-
-//=====================Dashboard Statistics===================
-
+// ===================== DASHBOARD STATS ====================
 exports.getDashboardStats = async () => {
-   const [totalUsers, totalTickets, totalQuotes, totalVisitors,] = await Promise.all([
-    User.countDocuments({ role: "user" }),
-    Ticket.countDocuments(),
-    Quote.countDocuments(),
-    Visitors.countDocuments(),
-  ]);
+  try {
+    const [totalUsers, totalTickets, totalQuotes, totalVisitors] = await Promise.all([
+      User.countDocuments(), // all users
+      Ticket.countDocuments(),
+      Quote.countDocuments(),
+      Visitors.countDocuments(),
+    ]);
 
-  return {
-    visitors: totalVisitors,
-    users: totalUsers,
-    quotes: totalQuotes,
-    tickets: totalTickets
-  };
+    return {
+      users: totalUsers,
+      tickets: totalTickets,
+      quotes: totalQuotes,
+      visitors: totalVisitors,
+    };
+  } catch (err) {
+    throw new Error("Failed to fetch dashboard stats: " + err.message);
+  }
 };
 
-//======================USERS===================
+// ===================== USERS ====================
 exports.getUsers = async () => {
-return await User.find().select("-password").sort({ createdAt: -1 });
+  return await User.find().select("-password").sort({ createdAt: -1 });
 };
 
-//======================TICKETS===================
+exports.updateUser = async (id, data) => {
+  return await User.findByIdAndUpdate(id, data, { new: true, runValidators: true });
+};
+
+exports.deleteUser = async (id) => {
+  return await User.findByIdAndDelete(id);
+};
+
+// ===================== TICKETS ====================
 exports.getTickets = async () => {
   return await Ticket.find()
     .populate("user", "name email")
     .sort({ createdAt: -1 });
 };
 
-//======================QUOTES===================
+exports.closeTicket = async (id) => {
+  return await Ticket.findByIdAndUpdate(id, { status: "closed" }, { new: true });
+};
+
+// ===================== QUOTES ====================
 exports.getQuotes = async () => {
   return await Quote.find().sort({ createdAt: -1 });
 };
 
-
-//======================Visitors (latest 100)========
+// ===================== VISITORS ====================
 exports.getVisitors = async () => {
   return await Visitors.find()
-  .populate("user", "name email")
+    .populate("user", "name email")
     .sort({ createdAt: -1 })
     .limit(100);
-};
-
-
-//=====================UPDATE USER================
-exports.updateUser = async (id, data) => {
-  return await User.findByIdAndUpdate(id, data, {
-    new: true,
-    runValidators: true
-  });
-};
-
-//=====================DELETE USER================
-exports.deleteUser = async (id) => {
-  return await User.findByIdAndDelete(id);
-};
-
-
-//=====================CLOSE TICKET================
-exports.closeTicket = async (id) => {
-  return await Ticket.findByIdAndUpdate(id, { status: "closed" }, { new: true });
 };
