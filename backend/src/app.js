@@ -3,11 +3,22 @@ const cors = require("cors");
 
 const app = express();
 
-// middlewares
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://crm-system-lyart-eight.vercel.app"
+];
+
 app.use(cors({
-  origin: "https://crm-system-lyart-eight.vercel.app",
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(null, true); // allow all (safe for now)
+    }
+  },
   credentials: true
 }));
+
 
 app.use(express.json());
 

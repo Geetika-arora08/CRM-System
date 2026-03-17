@@ -1,13 +1,18 @@
 import axios from "axios";
 
+const baseURL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:1995/api"
+    : "https://crm-system-mh0v.onrender.com/api";
+
 const api = axios.create({
-    baseURL: "https://crm-system-mh0v.onrender.com/api", 
-    // baseURL: "http://localhost:1995/api",
-    headers:{ "Content-Type" : "application/json",
-    }
+  baseURL,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
-// 🔥 Token automatically attach hoga
+// 🔥 Token auto attach
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
@@ -16,16 +21,16 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// 🔥 Auto logout
 api.interceptors.response.use(
   (res) => res,
   (err) => {
     if (err.response?.status === 401) {
       localStorage.clear();
-      window.location.href = "/admin"; // auto redirect
+      window.location.href = "/admin";
     }
     return Promise.reject(err);
   }
 );
-
 
 export default api;
