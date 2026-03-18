@@ -142,7 +142,7 @@ const UserDashboard = () => {
                         {ticket.subject}
                       </h3>
                       <p className="text-xs sm:text-sm text-gray-500 line-clamp-2">
-                        {ticket.message}
+                        {ticket.description}
                       </p>
                       <p className="text-xs text-gray-400 mt-1">
                         {new Date(ticket.createdAt).toLocaleDateString()}

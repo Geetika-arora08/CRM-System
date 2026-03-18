@@ -14,7 +14,7 @@ exports.userdashboard = async (req, res) => {
 
     const openTickets = await Ticket.countDocuments({
       user: userId,
-      status: "open",
+      status: { $in:["open", "in-progress"]} 
     });
 
     const closedTickets = await Ticket.countDocuments({
